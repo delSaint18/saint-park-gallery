@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAINTPARK — where the artists go to play</title>
+<meta name="description" content="Saint Park: interactive audio-reactive 3D visualizer sites, one per song. Where the artists go to play.">
+<!-- og: tags — link unfurls in chat apps. -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://delsaint18.github.io/saint-park-gallery/">
+<meta property="og:title" content="SAINTPARK — where the artists go to play">
+<meta property="og:description" content="Interactive audio-reactive 3D visualizer sites, one per song.">
+<meta property="og:image" content="https://delsaint18.github.io/saint-park-gallery/thumbs/cover.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+/* ===== SAINTPARK — minimalist park: black / white / blue ============ */
+:root{
+  --blue:#a9d9f2;
+  --blue-deep:#8fcdee;
+  --black:#0d0d0d;
+  --white:#ffffff;
+  --sans:'Archivo Black', 'Arial Black', sans-serif;
+  --serif:'Lora', Georgia, serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--blue)}
+body{
+  font-family:var(--serif); font-size:18px; line-height:1.55; color:var(--black);
+  background:var(--blue); min-height:100vh; overflow-x:hidden;
+}
+/* faint concentric circles, like the poster's ripple */
+.ripple{
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image:radial-gradient(circle at 50% 42%,
+    transparent 0 119px, #ffffff2e 119px 122px,
+    transparent 122px 239px, #ffffff2e 239px 242px,
+    transparent 242px 379px, #ffffff2e 379px 382px,
+    transparent 382px 539px, #ffffff2e 539px 542px,
+    transparent 542px);
+}
+a{color:var(--black)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--black); outline-offset:3px}
+.wrap{max-width:1060px; margin:0 auto; padding:0 20px; position:relative; z-index:1}
+
+/* ===== scalloped black clouds (poster corners) ===== */
+.cloud{position:absolute; z-index:0; pointer-events:none; fill:var(--black)}
+.cloud.c1{top:-38px; left:-46px; width:170px; animation:drift 26s ease-in-out infinite alternate}
+.cloud.c2{top:120px; right:-70px; width:210px; animation:drift 34s ease-in-out infinite alternate-reverse}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(26px)}}
+
+/* ===== HERO ===== */
+header{position:relative; padding:64px 0 8px; z-index:1}
+.wordmark{
+  font-family:var(--sans); font-weight:400;
+  font-size:clamp(52px,13.5vw,150px); line-height:.92; letter-spacing:-.02em;
+  text-transform:uppercase; word-break:keep-all;
+}
+.wordmark .saint{color:var(--white)}
+.wordmark .park{color:var(--black)}
+.halo-pin{display:block; margin:14px 2px 10px; width:20px; height:auto}
+.halo-pin .l{fill:var(--white)} .halo-pin .r{fill:var(--black)}
+.tagline{
+  font-family:var(--serif); font-weight:600; font-size:clamp(20px,3.4vw,30px);
+  line-height:1.25; max-width:14em;
+}
+.tagline em{font-style:italic; font-weight:400}
+/* creature slot — drop creature.png (transparent) at the gallery root; hides itself if missing */
+.creature{
+  position:absolute; right:0; bottom:-26px; width:clamp(110px,20vw,210px); height:auto;
+  z-index:1; animation:bob 5.5s ease-in-out infinite;
+}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@media(max-width:640px){.creature{bottom:auto; top:8px; width:88px; opacity:.95}}
+
+/* ===== SECTION LABELS ===== */
+.label{
+  font-family:var(--sans); font-size:15px; letter-spacing:.28em; text-transform:uppercase;
+  display:flex; align-items:center; gap:14px; margin:56px 0 26px;
+}
+.label::after{content:""; flex:1; height:3px; background:var(--black)}
+
+/* ===== WALL: borderless editorial cards ===== */
+.wall{display:grid; grid-template-columns:1fr; gap:40px 28px; padding-bottom:24px}
+@media(min-width:560px){.wall{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:900px){.wall{grid-template-columns:repeat(3,1fr)}}
+.piece{display:block; text-decoration:none; color:var(--black)}
+.frame{
+  position:relative; aspect-ratio:4/3; overflow:hidden; background:var(--black);
+  transition:transform .22s ease, box-shadow .22s ease;
+}
+.piece:hover .frame,.piece:focus-visible .frame{
+  transform:translateY(-6px);
+  box-shadow:0 14px 0 -6px var(--black);
+}
+.frame img{width:100%; height:100%; object-fit:cover; display:block}
+/* missing thumb: flat black tile, white halo, title */
+.frame.blank{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding:16px}
+.frame.blank .halo{
+  width:74px; height:26px; border:4px solid var(--white); border-radius:50%;
+  transform:rotate(-8deg);
+}
+.frame.blank .t{
+  font-family:var(--sans); color:var(--white); font-size:18px; text-transform:uppercase;
+  letter-spacing:.04em; text-align:center; line-height:1.15; word-break:break-word;
+}
+.caption{padding-top:12px}
+.caption h3{
+  font-family:var(--sans); font-weight:400; font-size:19px; line-height:1.1;
+  text-transform:uppercase; letter-spacing:.01em;
+}
+.caption .by{font-style:italic; font-size:16px; margin-top:2px}
+.caption .blurb{
+  font-size:15.5px; margin-top:6px; color:#1c1c1c;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+}
+.caption .go{
+  display:inline-block; margin-top:8px; font-family:var(--sans); font-size:13px;
+  letter-spacing:.22em; text-transform:uppercase; border-bottom:3px solid var(--black);
+  padding-bottom:2px;
+}
+.piece:hover .go,.piece:focus-visible .go{background:var(--black); color:var(--white); border-bottom-color:var(--black)}
+.caption .meta{font-size:13.5px; margin-top:6px; letter-spacing:.14em; text-transform:uppercase; font-family:var(--serif)}
+.caption .meta .star{font-style:normal}
+.notice{
+  grid-column:1/-1; text-align:center; padding:56px 20px;
+  border:3px dashed var(--black); font-style:italic; font-size:19px;
+}
+
+/* ===== THE HILL: white rolling hill holds About + Commission ===== */
+.hill{
+  position:relative; margin-top:64px; z-index:1;
+}
+.hill .crest{
+  display:block; width:100%; height:clamp(60px,12vw,150px); fill:var(--white);
+}
+.hill-body{background:var(--white); padding:8px 0 72px}
+.hill-body .label::after{background:var(--black)}
+.about-grid{display:grid; gap:36px; grid-template-columns:1fr}
+@media(min-width:760px){.about-grid{grid-template-columns:1.2fr .8fr}}
+.about p{max-width:58ch; margin-bottom:14px}
+.links{display:flex; flex-wrap:wrap; gap:10px 12px; margin-top:18px}
+.links a{
+  font-family:var(--sans); font-size:13px; letter-spacing:.14em; text-transform:uppercase;
+  text-decoration:none; color:var(--white); background:var(--black);
+  padding:9px 18px; border-radius:999px;
+}
+.links a:hover{background:var(--blue); color:var(--black); box-shadow:inset 0 0 0 3px var(--black)}
+.commission{
+  border:3px solid var(--black); padding:26px 24px 30px; position:relative; background:var(--white);
+}
+.commission h2{
+  font-family:var(--sans); font-weight:400; font-size:clamp(20px,3vw,26px);
+  text-transform:uppercase; line-height:1.15; margin-bottom:12px;
+}
+.commission p{font-size:16.5px; margin-bottom:18px}
+.btn{
+  display:inline-block; font-family:var(--sans); font-size:15px; letter-spacing:.16em;
+  text-transform:uppercase; text-decoration:none; color:var(--white); background:var(--black);
+  padding:14px 26px; transition:transform .15s ease, box-shadow .15s ease;
+}
+.btn:hover{transform:translate(-3px,-3px); box-shadow:6px 6px 0 var(--blue-deep)}
+
+/* ===== FOOTER: black strip ===== */
+footer{background:var(--black); color:var(--white); padding:34px 0 46px; position:relative; z-index:1}
+footer .wrap{display:flex; flex-direction:column; gap:16px; align-items:center; text-align:center}
+.webring{display:flex; gap:2px; align-items:center; flex-wrap:wrap; justify-content:center}
+.webring .tag{
+  font-family:var(--sans); font-size:12px; letter-spacing:.26em; text-transform:uppercase;
+  padding:0 12px; color:var(--blue);
+}
+.webring a{
+  color:var(--white); text-decoration:none; font-family:var(--sans); font-size:13px;
+  letter-spacing:.14em; text-transform:uppercase; padding:6px 12px;
+}
+.webring a:hover{background:var(--white); color:var(--black)}
+.fine{font-style:italic; font-size:15px; color:#cfe9f8}
+
+/* ===== reduced motion ===== */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none !important; transition:none !important}
+  .piece:hover .frame{transform:none}
+  .btn:hover{transform:none}
+}
+</style>
+</head>
+<body>
+
+<div class="ripple" aria-hidden="true"></div>
+
+<!-- scalloped clouds -->
+<svg class="cloud c1" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
+<svg class="cloud c2" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
+
+<header class="wrap">
+  <h1 class="wordmark"><span class="saint">SAINT</span><span class="park">PARK</span></h1>
+  <svg class="halo-pin" viewBox="0 0 20 30" aria-hidden="true">
+    <path class="l" d="M10 0A10 10 0 0 0 0 10c0 7 10 20 10 20z"/>
+    <path class="r" d="M10 0a10 10 0 0 1 10 10c0 7-10 20-10 20z"/>
+  </svg>
+  <p class="tagline" id="tagline">where the artists <em>go to play.</em></p>
+  <!-- drop your transparent creature.png next to index.html; this hides itself if the file is missing -->
+  <img class="creature" src="creature.png" alt="" hidden
+       onload="this.hidden=false" onerror="this.remove()">
+</header>
+
+<main class="wrap">
+  <h2 class="label" id="wall-label">On view</h2>
+  <div class="wall" id="wall" role="list">
+    <div class="notice" id="wall-notice">opening the gates…</div>
+  </div>
+</main>
+
+<div class="hill">
+  <svg class="crest" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 120 L0 90 Q 360 0 780 55 Q 1140 100 1440 40 L1440 120 Z"/>
+  </svg>
+  <div class="hill-body">
+    <div class="wrap">
+      <div class="about-grid">
+        <section class="about" id="about">
+          <h2 class="label">About the park</h2>
+          <p id="bio">Saint Park builds interactive, audio-reactive 3D visualizer sites —
+            one hand-made world per song. Click a piece. Turn your sound on.</p>
+          <nav class="links" id="links" aria-label="Social links"></nav>
+        </section>
+        <section class="commission">
+          <h2>Get one for your music</h2>
+          <p id="pitch">Every piece in this park is a commission: a self-contained 3D world
+            that reacts to one song, lives at its own link, and drops straight into your bio.
+            If you want your track in the park, write in.</p>
+          <a class="btn" id="booking" href="mailto:PLACEHOLDER@example.com?subject=Saint%20Park%20commission">Book a piece →</a>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <nav class="webring" id="webring" aria-label="Webring navigation" hidden>
+      <a id="ring-prev" href="#" rel="prev">← prev</a>
+      <span class="tag">webring</span>
+      <a id="ring-rand" href="#">random</a>
+      <span class="tag">·</span>
+      <a id="ring-next" href="#" rel="next">next →</a>
+    </nav>
+    <p class="fine" id="footer-line">SAINTPARK · a delSaint practice · every piece is a song</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+
+/* -------- helpers -------- */
+function el(tag, cls, text){
+  var n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text != null) n.textContent = text;   // textContent only: manifest data is never parsed as HTML
+  return n;
+}
+function slugToTitle(slug){
+  return String(slug).replace(/[-_]+/g," ").replace(/\b\w/g, function(c){return c.toUpperCase();});
+}
+function loadJSON(path){
+  return fetch(path, {cache:"no-store"})
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .catch(function(){ return null; });
+}
+
+/* -------- card builders -------- */
+function buildCard(piece){
+  var a = el("a","piece");
+  a.href = "./" + encodeURIComponent(piece.slug) + "/";
+  a.setAttribute("role","listitem");
+  a.setAttribute("aria-label", piece.title + (piece.artist ? " by " + piece.artist : "") + " — enter");
+
+  var frame = el("div","frame");
+  if (piece.thumb){
+    var img = document.createElement("img");
+    img.src = piece.thumb;
+    img.alt = "";                 // decorative; card has aria-label
+    img.loading = "lazy";
+    img.decoding = "async";
+    img.addEventListener("error", function(){ makeBlank(frame, piece); });
+    frame.appendChild(img);
+  } else {
+    makeBlank(frame, piece);
+  }
+  a.appendChild(frame);
+
+  var cap = el("div","caption");
+  cap.appendChild(el("h3", null, piece.title));
+  if (piece.artist) cap.appendChild(el("p","by","by " + piece.artist));
+  if (piece.blurb)  cap.appendChild(el("p","blurb", piece.blurb));
+  var meta = el("p","meta");
+  if (piece.pinned) meta.appendChild(el("span","star","★ featured  "));
+  if (piece.year)   meta.appendChild(el("span",null,String(piece.year)));
+  if (meta.childNodes.length) cap.appendChild(meta);
+  cap.appendChild(el("span","go","enter →"));
+  a.appendChild(cap);
+  return a;
+}
+function makeBlank(frame, piece){
+  frame.innerHTML = "";
+  frame.classList.add("blank");
+  frame.appendChild(el("span","halo"));
+  frame.appendChild(el("span","t", piece.title));
+}
+
+/* -------- merge ring.json + manifest.json -------- */
+function mergePieces(ring, manifest){
+  var bySlug = {};
+  var order = [];
+  var ringSlugs = (ring && Array.isArray(ring.sites)) ? ring.sites : [];
+  ringSlugs.forEach(function(slug){
+    if (!slug || bySlug[slug]) return;
+    bySlug[slug] = { slug:slug, title:slugToTitle(slug) };
+    order.push(slug);
+  });
+  var mPieces = (manifest && Array.isArray(manifest.pieces)) ? manifest.pieces : [];
+  mPieces.forEach(function(p){
+    if (!p || !p.slug) return;
+    if (!bySlug[p.slug]){ bySlug[p.slug] = { slug:p.slug, title:slugToTitle(p.slug) }; order.push(p.slug); }
+    var t = bySlug[p.slug];
+    if (p.title)  t.title  = p.title;
+    if (p.artist) t.artist = p.artist;
+    if (p.blurb)  t.blurb  = p.blurb;
+    if (p.thumb)  t.thumb  = p.thumb;
+    if (p.year)   t.year   = p.year;
+    if (p.pinned) t.pinned = true;
+  });
+  var pieces = order.map(function(s){ return bySlug[s]; });
+  // stable: pinned first, ring order preserved within each group
+  return pieces.filter(function(p){return p.pinned;})
+        .concat(pieces.filter(function(p){return !p.pinned;}));
+}
+
+/* -------- webring footer -------- */
+function initWebring(ring){
+  var slugs = (ring && Array.isArray(ring.sites)) ? ring.sites : [];
+  if (!slugs.length) return;
+  var nav = document.getElementById("webring");
+  document.getElementById("ring-prev").href = "./" + encodeURIComponent(slugs[slugs.length-1]) + "/";
+  document.getElementById("ring-next").href = "./" + encodeURIComponent(slugs[0]) + "/";
+  var rand = document.getElementById("ring-rand");
+  rand.href = "./" + encodeURIComponent(slugs[0]) + "/";
+  rand.addEventListener("click", function(e){
+    e.preventDefault();
+    var pick = slugs[Math.floor(Math.random()*slugs.length)];
+    window.location.href = "./" + encodeURIComponent(pick) + "/";
+  });
+  nav.hidden = false;
+}
+
+/* -------- fill header / about / commission from manifest -------- */
+function applyManifest(m){
+  if (!m) return;
+  if (m.tagline) document.getElementById("tagline").textContent = m.tagline;
+  if (m.bio)     document.getElementById("bio").textContent = m.bio;
+  if (m.pitch)   document.getElementById("pitch").textContent = m.pitch;
+  if (m.artist)  document.getElementById("footer-line").textContent =
+                   "SAINTPARK · a " + m.artist + " practice · every piece is a song";
+  if (m.email){
+    var b = document.getElementById("booking");
+    b.href = "mailto:" + m.email + "?subject=" + encodeURIComponent("Saint Park commission");
+  }
+  var linksNav = document.getElementById("links");
+  (Array.isArray(m.links) ? m.links : []).forEach(function(l){
+    if (!l || !l.url || !l.label) return;
+    var a = el("a", null, l.label);
+    a.href = l.url;
+    a.rel = "me noopener";
+    a.target = "_blank";
+    linksNav.appendChild(a);
+  });
+}
+
+/* -------- boot -------- */
+Promise.all([loadJSON("ring.json"), loadJSON("manifest.json")]).then(function(res){
+  var ring = res[0], manifest = res[1];
+  applyManifest(manifest);
+  initWebring(ring);
+
+  var wall = document.getElementById("wall");
+  var notice = document.getElementById("wall-notice");
+  var pieces = mergePieces(ring, manifest);
+
+  if (!pieces.length){
+    notice.textContent = (location.protocol === "file:")
+      ? "The park needs a web server to open — serve this folder over http (any static host works)."
+      : "Nothing on view yet — add slugs to ring.json (and metadata to manifest.json), then reload.";
+    return;
+  }
+  notice.remove();
+  var frag = document.createDocumentFragment();
+  pieces.forEach(function(p){ frag.appendChild(buildCard(p)); });
+  wall.appendChild(frag);
+  document.getElementById("wall-label").textContent =
+    "On view · " + pieces.length + (pieces.length === 1 ? " piece" : " pieces");
+});
+})();
+</script>
+</body>
+</html>
