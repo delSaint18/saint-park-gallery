@@ -45,14 +45,19 @@ a{color:var(--black)}
 a:focus-visible,button:focus-visible{outline:3px solid var(--black); outline-offset:3px}
 .wrap{max-width:1060px; margin:0 auto; padding:0 20px; position:relative; z-index:1}
 
-/* ===== scalloped black clouds (poster corners) ===== */
-.cloud{position:absolute; z-index:0; pointer-events:none; fill:var(--black)}
+/* ===== scalloped black clouds (poster corners) — one per .wrap section, bleeding off the side edges ===== */
+.cloud{position:absolute; z-index:0; pointer-events:none; fill:var(--black); opacity:.9}
 .cloud.c1{top:-38px; left:-46px; width:170px; animation:drift 26s ease-in-out infinite alternate}
 .cloud.c2{top:120px; right:-70px; width:210px; animation:drift 34s ease-in-out infinite alternate-reverse}
+.cloud.c3{top:40px; left:-60px; width:130px; animation:drift 30s ease-in-out infinite alternate}
+.cloud.c4{bottom:-30px; right:-50px; width:150px; animation:drift 22s ease-in-out infinite alternate-reverse}
+.cloud.c5{top:-24px; right:6%; width:100px; animation:drift 28s ease-in-out infinite alternate}
 @keyframes drift{from{transform:translateX(0)}to{transform:translateX(26px)}}
 
 /* ===== HERO ===== */
 header{position:relative; padding:64px 0 8px; z-index:1}
+header.wrap{display:flex; flex-wrap:wrap; align-items:flex-end; gap:8px 28px}
+.hero-text{flex:1 1 320px; min-width:0}
 .wordmark{
   font-family:var(--sans); font-weight:400;
   font-size:clamp(52px,13.5vw,150px); line-height:.92; letter-spacing:-.02em;
@@ -67,13 +72,14 @@ header{position:relative; padding:64px 0 8px; z-index:1}
   line-height:1.25; max-width:14em;
 }
 .tagline em{font-style:italic; font-weight:400}
-/* creature slot — drop creature.png (transparent) at the gallery root; hides itself if missing */
+/* creature slot — drop creature.png (transparent) at the gallery root; hides itself if missing.
+   Lives in normal flow beside the hero text (flex), so it can never overlap the wordmark. */
 .creature{
-  position:absolute; right:0; bottom:-26px; width:clamp(110px,20vw,210px); height:auto;
-  z-index:1; animation:bob 5.5s ease-in-out infinite;
+  flex:0 0 auto; width:clamp(90px,14vw,170px); height:auto; margin-left:auto;
+  animation:bob 5.5s ease-in-out infinite;
 }
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
-@media(max-width:640px){.creature{bottom:auto; top:8px; width:88px; opacity:.95}}
+@media(max-width:640px){.creature{width:78px; opacity:.95}}
 
 /* ===== SECTION LABELS — HUD tag + trailing rule ===== */
 .label{
@@ -148,8 +154,10 @@ header{position:relative; padding:64px 0 8px; z-index:1}
   position:relative; margin-top:64px; z-index:1;
 }
 .hill .crest{
-  display:block; width:100%; height:clamp(60px,12vw,150px); fill:var(--white);
+  display:block; width:100%; height:clamp(90px,16vw,210px);
 }
+.hill .crest .fill{fill:var(--white)}
+.hill .crest .line{fill:none; stroke:var(--black); stroke-width:5; vector-effect:non-scaling-stroke}
 .hill-body{background:var(--white); padding:8px 0 72px}
 .hill-body .label::after{background:var(--black)}
 .about-grid{display:grid; gap:36px; grid-template-columns:1fr}
@@ -214,18 +222,22 @@ footer .wrap{display:flex; flex-direction:column; gap:16px; align-items:center; 
 <svg class="cloud c2" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
 
 <header class="wrap">
-  <h1 class="wordmark"><span class="saint">SAINT</span><span class="park">PARK</span></h1>
-  <svg class="halo-pin" viewBox="0 0 20 30" aria-hidden="true">
-    <path class="l" d="M10 0A10 10 0 0 0 0 10c0 7 10 20 10 20z"/>
-    <path class="r" d="M10 0a10 10 0 0 1 10 10c0 7-10 20-10 20z"/>
-  </svg>
-  <p class="tagline" id="tagline">where the artists <em>go to play.</em></p>
+  <div class="hero-text">
+    <h1 class="wordmark"><span class="saint">SAINT</span><span class="park">PARK</span></h1>
+    <svg class="halo-pin" viewBox="0 0 20 30" aria-hidden="true">
+      <path class="l" d="M10 0A10 10 0 0 0 0 10c0 7 10 20 10 20z"/>
+      <path class="r" d="M10 0a10 10 0 0 1 10 10c0 7-10 20-10 20z"/>
+    </svg>
+    <p class="tagline" id="tagline">where the artists <em>go to play.</em></p>
+  </div>
   <!-- drop your transparent creature.png next to index.html; this hides itself if the file is missing -->
   <img class="creature" src="creature.png" alt="" hidden
        onload="this.hidden=false" onerror="this.remove()">
 </header>
 
 <main class="wrap">
+  <svg class="cloud c3" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
+  <svg class="cloud c4" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
   <h2 class="label"><span id="wall-label">On view</span></h2>
   <div class="wall" id="wall" role="list">
     <div class="notice" id="wall-notice">opening the gates…</div>
@@ -234,10 +246,12 @@ footer .wrap{display:flex; flex-direction:column; gap:16px; align-items:center; 
 
 <div class="hill">
   <svg class="crest" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
-    <path d="M0 120 L0 90 Q 360 0 780 55 Q 1140 100 1440 40 L1440 120 Z"/>
+    <path class="fill" d="M0 120 L0 90 Q 360 0 780 55 Q 1140 100 1440 40 L1440 120 Z"/>
+    <path class="line" d="M0 90 Q 360 0 780 55 Q 1140 100 1440 40"/>
   </svg>
   <div class="hill-body">
     <div class="wrap">
+      <svg class="cloud c5" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
       <div class="about-grid">
         <section class="about" id="about">
           <h2 class="label"><span>About the park</span></h2>
