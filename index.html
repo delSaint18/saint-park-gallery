@@ -55,7 +55,10 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--black); outline-off
 .cloud.c3{top:40px; left:-60px; width:130px; animation:drift 30s ease-in-out infinite alternate}
 .cloud.c4{bottom:-30px; right:-50px; width:150px; animation:drift 22s ease-in-out infinite alternate-reverse}
 .cloud.c5{top:-24px; right:-60px; width:100px; animation:drift 28s ease-in-out infinite alternate}
-@keyframes drift{from{transform:translateX(0)}to{transform:translateX(26px)}}
+/* drift/bob animate the standalone "translate" property (not "transform") so a JS
+   scroll-parallax can drive "transform" on the same elements without fighting the
+   animation — the two properties compose instead of overriding each other. */
+@keyframes drift{from{translate:0 0}to{translate:26px 0}}
 
 /* ===== HERO ===== */
 header{position:relative; padding:64px 0 8px; z-index:1}
@@ -83,7 +86,7 @@ header{position:relative; padding:64px 0 8px; z-index:1}
   opacity:.1;
   animation:bob 10s ease-in-out infinite;
 }
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes bob{0%,100%{translate:0 0}50%{translate:0 -14px}}
 @media(max-width:640px){.creature{width:85vw; right:-4%; top:2%; opacity:.11}}
 
 /* ===== SECTION LABELS — HUD tag + trailing rule ===== */
@@ -222,9 +225,10 @@ footer .wrap{display:flex; flex-direction:column; gap:16px; align-items:center; 
 
 <div class="ripple" aria-hidden="true"></div>
 
-<!-- scalloped clouds -->
-<svg class="cloud c1" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
-<svg class="cloud c2" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
+<!-- scalloped clouds — data-px is the horizontal parallax direction (-1 drifts left-bleeding
+     clouds further left on scroll, 1 drifts right-bleeding clouds further right) -->
+<svg class="cloud c1" data-px="-1" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
+<svg class="cloud c2" data-px="1" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
 
 <header class="wrap">
   <div class="hero-text">
@@ -241,8 +245,8 @@ footer .wrap{display:flex; flex-direction:column; gap:16px; align-items:center; 
 </header>
 
 <main class="wrap">
-  <svg class="cloud c3" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
-  <svg class="cloud c4" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
+  <svg class="cloud c3" data-px="-1" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
+  <svg class="cloud c4" data-px="1" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
   <h2 class="label"><span id="wall-label">On view</span></h2>
   <div class="wall" id="wall" role="list">
     <div class="notice" id="wall-notice">opening the gates…</div>
@@ -256,7 +260,7 @@ footer .wrap{display:flex; flex-direction:column; gap:16px; align-items:center; 
   </svg>
   <div class="hill-body">
     <div class="wrap">
-      <svg class="cloud c5" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
+      <svg class="cloud c5" data-px="1" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
       <div class="about-grid">
         <section class="about" id="about">
           <h2 class="label"><span>About the park</span></h2>
@@ -514,6 +518,30 @@ Promise.all([loadJSON("ring.json"), loadJSON("manifest.json"), loadText("videos.
     "On view · " + pieces.length + (pieces.length === 1 ? " piece" : " pieces");
   }); // parseVideoLines
 });
+})();
+
+/* -------- scroll parallax: mascot drifts down slower than the page, clouds drift
+   further off to their side — both skip entirely under prefers-reduced-motion -------- */
+(function(){
+"use strict";
+if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+var creature = document.querySelector(".creature");
+var clouds = Array.prototype.slice.call(document.querySelectorAll(".cloud"));
+if (!creature && !clouds.length) return;
+var ticking = false;
+function apply(){
+  var y = window.scrollY || window.pageYOffset || 0;
+  if (creature) creature.style.transform = "translateY(" + Math.round(y * 0.3) + "px)";
+  clouds.forEach(function(c){
+    var dir = c.getAttribute("data-px") === "-1" ? -1 : 1;
+    c.style.transform = "translateX(" + Math.round(y * 0.12 * dir) + "px)";
+  });
+  ticking = false;
+}
+window.addEventListener("scroll", function(){
+  if (!ticking){ window.requestAnimationFrame(apply); ticking = true; }
+}, {passive:true});
+apply();
 })();
 </script>
 </body>
