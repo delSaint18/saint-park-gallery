@@ -55,7 +55,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--black); outline-off
 @keyframes drift{from{transform:translateX(0)}to{transform:translateX(26px)}}
 
 /* ===== HERO ===== */
-header{position:relative; padding:64px 0 8px; z-index:1; overflow:hidden}
+header{position:relative; padding:64px 0 8px; z-index:1}
 .hero-text{position:relative; z-index:1}
 .wordmark{
   font-family:var(--sans); font-weight:400;
@@ -76,12 +76,12 @@ header{position:relative; padding:64px 0 8px; z-index:1; overflow:hidden}
    large, low-opacity, z-index:0, so it can never compete with or overlap the title. */
 .creature{
   position:absolute; z-index:0; pointer-events:none;
-  right:-6%; top:-10%; width:clamp(280px,46vw,640px); height:auto;
-  opacity:.09;
+  right:-4%; top:-6%; width:clamp(220px,34vw,480px); height:auto;
+  opacity:.1;
   animation:bob 10s ease-in-out infinite;
 }
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
-@media(max-width:640px){.creature{width:78vw; right:-18%; top:-4%; opacity:.1}}
+@media(max-width:640px){.creature{width:70vw; right:-14%; top:-2%; opacity:.11}}
 
 /* ===== SECTION LABELS — HUD tag + trailing rule ===== */
 .label{
