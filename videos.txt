@@ -1,0 +1,11 @@
+# SAINT PARK — YouTube video links.
+# One link per line. Title, artist, and thumbnail are pulled automatically
+# from YouTube — just paste the link and reload the page.
+#
+# To override the auto title/blurb/year, or pin it to the top, add fields
+# separated by "|" (all optional, leave blank to skip):
+#   URL | Title | one-line blurb | year | pinned
+#
+# Lines starting with # are ignored.
+
+https://www.youtube.com/watch?v=RaDepcmXmRw

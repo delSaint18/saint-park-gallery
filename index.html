@@ -359,10 +359,53 @@ function mergePieces(ring, manifest){
     if (p.type)   t.type   = p.type;
     if (p.url)    t.url    = p.url;
   });
-  var pieces = order.map(function(s){ return bySlug[s]; });
-  // stable: pinned first, ring order preserved within each group
+  return order.map(function(s){ return bySlug[s]; });
+}
+function sortPinned(pieces){
+  // stable: pinned first, original order preserved within each group
   return pieces.filter(function(p){return p.pinned;})
         .concat(pieces.filter(function(p){return !p.pinned;}));
+}
+
+/* -------- videos.txt: one YouTube link per line, title/artist auto-fetched -------- */
+function loadText(path){
+  return fetch(path, {cache:"no-store"})
+    .then(function(r){ return r.ok ? r.text() : ""; })
+    .catch(function(){ return ""; });
+}
+function parseVideoLines(text){
+  var lines = String(text || "").split(/\r?\n/)
+    .map(function(l){ return l.trim(); })
+    .filter(function(l){ return l && l[0] !== "#"; });
+  var jobs = lines.map(function(line){
+    var parts = line.split("|").map(function(s){ return s.trim(); });
+    var url = parts[0];
+    var id = youtubeId(url);
+    var piece = {
+      slug: "yt-" + (id || Math.random().toString(36).slice(2)),
+      type: "video",
+      url: url,
+      title: parts[1] || "",
+      blurb: parts[2] || undefined,
+      year: parts[3] ? Number(parts[3]) : undefined,
+      pinned: (parts[4] || "").toLowerCase() === "pinned" || undefined,
+      thumb: id ? ("https://img.youtube.com/vi/" + id + "/hqdefault.jpg") : undefined
+    };
+    if (piece.title) return Promise.resolve(piece);
+    // no title override — ask YouTube's oEmbed endpoint for title + channel name
+    return fetch("https://www.youtube.com/oembed?format=json&url=" + encodeURIComponent(url))
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(meta){
+        piece.title = (meta && meta.title) || slugToTitle(id || "video");
+        if (meta && meta.author_name) piece.artist = meta.author_name;
+        return piece;
+      })
+      .catch(function(){
+        piece.title = slugToTitle(id || "video");
+        return piece;
+      });
+  });
+  return Promise.all(jobs);
 }
 
 /* -------- webring footer -------- */
@@ -406,14 +449,16 @@ function applyManifest(m){
 }
 
 /* -------- boot -------- */
-Promise.all([loadJSON("ring.json"), loadJSON("manifest.json")]).then(function(res){
-  var ring = res[0], manifest = res[1];
+Promise.all([loadJSON("ring.json"), loadJSON("manifest.json"), loadText("videos.txt")]).then(function(res){
+  var ring = res[0], manifest = res[1], videosTxt = res[2];
   applyManifest(manifest);
   initWebring(ring);
 
   var wall = document.getElementById("wall");
   var notice = document.getElementById("wall-notice");
-  var pieces = mergePieces(ring, manifest);
+
+  parseVideoLines(videosTxt).then(function(videoPieces){
+  var pieces = sortPinned(mergePieces(ring, manifest).concat(videoPieces));
 
   if (!pieces.length){
     notice.textContent = (location.protocol === "file:")
@@ -427,6 +472,7 @@ Promise.all([loadJSON("ring.json"), loadJSON("manifest.json")]).then(function(re
   wall.appendChild(frag);
   document.getElementById("wall-label").textContent =
     "On view · " + pieces.length + (pieces.length === 1 ? " piece" : " pieces");
+  }); // parseVideoLines
 });
 })();
 </script>
