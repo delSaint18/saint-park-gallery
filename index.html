@@ -96,6 +96,12 @@ header{position:relative; padding:64px 0 8px; z-index:1}
   box-shadow:0 14px 0 -6px var(--black);
 }
 .frame img{width:100%; height:100%; object-fit:cover; display:block}
+.badge{
+  position:absolute; top:8px; left:8px; z-index:2; pointer-events:none;
+  font-family:var(--sans); font-size:10.5px; letter-spacing:.16em; text-transform:uppercase;
+  padding:4px 9px; border-radius:999px; background:var(--black); color:var(--white);
+}
+.badge.video{background:var(--white); color:var(--black)}
 /* missing thumb: flat black tile, white halo, title */
 .frame.blank{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding:16px}
 .frame.blank .halo{
@@ -272,16 +278,33 @@ function loadJSON(path){
 }
 
 /* -------- card builders -------- */
+function youtubeId(url){
+  if (!url) return null;
+  var m = String(url).match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|shorts\/|embed\/))([A-Za-z0-9_-]{6,})/);
+  return m ? m[1] : null;
+}
 function buildCard(piece){
+  var isVideo = piece.type === "video";
   var a = el("a","piece");
-  a.href = "./" + encodeURIComponent(piece.slug) + "/";
+  if (isVideo){
+    a.href = piece.url || "#";
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+  } else {
+    a.href = "./" + encodeURIComponent(piece.slug) + "/";
+  }
   a.setAttribute("role","listitem");
-  a.setAttribute("aria-label", piece.title + (piece.artist ? " by " + piece.artist : "") + " — enter");
+  a.setAttribute("aria-label", piece.title + (piece.artist ? " by " + piece.artist : "") + (isVideo ? " — watch on YouTube" : " — enter"));
 
   var frame = el("div","frame");
-  if (piece.thumb){
+  var thumbSrc = piece.thumb;
+  if (!thumbSrc && isVideo){
+    var yid = youtubeId(piece.url);
+    if (yid) thumbSrc = "https://img.youtube.com/vi/" + yid + "/hqdefault.jpg";
+  }
+  if (thumbSrc){
     var img = document.createElement("img");
-    img.src = piece.thumb;
+    img.src = thumbSrc;
     img.alt = "";                 // decorative; card has aria-label
     img.loading = "lazy";
     img.decoding = "async";
@@ -290,6 +313,7 @@ function buildCard(piece){
   } else {
     makeBlank(frame, piece);
   }
+  frame.appendChild(el("span","badge" + (isVideo ? " video" : ""), isVideo ? "MP4" : "HTML"));
   a.appendChild(frame);
 
   var cap = el("div","caption");
@@ -300,7 +324,7 @@ function buildCard(piece){
   if (piece.pinned) meta.appendChild(el("span","star","★ featured  "));
   if (piece.year)   meta.appendChild(el("span",null,String(piece.year)));
   if (meta.childNodes.length) cap.appendChild(meta);
-  cap.appendChild(el("span","go","enter →"));
+  cap.appendChild(el("span","go", isVideo ? "watch →" : "enter →"));
   a.appendChild(cap);
   return a;
 }
@@ -332,6 +356,8 @@ function mergePieces(ring, manifest){
     if (p.thumb)  t.thumb  = p.thumb;
     if (p.year)   t.year   = p.year;
     if (p.pinned) t.pinned = true;
+    if (p.type)   t.type   = p.type;
+    if (p.url)    t.url    = p.url;
   });
   var pieces = order.map(function(s){ return bySlug[s]; });
   // stable: pinned first, ring order preserved within each group
