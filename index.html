@@ -46,7 +46,10 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--black); outline-off
 .wrap{max-width:1060px; margin:0 auto; padding:0 20px; position:relative; z-index:1}
 
 /* ===== scalloped black clouds (poster corners) — one per .wrap section, bleeding off the side edges ===== */
-.cloud{position:absolute; z-index:0; pointer-events:none; fill:var(--black); opacity:.9}
+.cloud{
+  position:absolute; z-index:0; pointer-events:none; fill:var(--black); opacity:.9;
+  filter:drop-shadow(3px 5px 4px rgba(0,0,0,.35));
+}
 .cloud.c1{top:-38px; left:-46px; width:170px; animation:drift 26s ease-in-out infinite alternate}
 .cloud.c2{top:120px; right:-70px; width:210px; animation:drift 34s ease-in-out infinite alternate-reverse}
 .cloud.c3{top:40px; left:-60px; width:130px; animation:drift 30s ease-in-out infinite alternate}
@@ -76,12 +79,12 @@ header{position:relative; padding:64px 0 8px; z-index:1}
    large, low-opacity, z-index:0, so it can never compete with or overlap the title. */
 .creature{
   position:absolute; z-index:0; pointer-events:none;
-  right:-4%; top:-6%; width:clamp(220px,34vw,480px); height:auto;
+  right:calc(-4% + 160px); top:-1%; width:clamp(330px,51vw,720px); height:auto;
   opacity:.1;
   animation:bob 10s ease-in-out infinite;
 }
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
-@media(max-width:640px){.creature{width:70vw; right:-14%; top:-2%; opacity:.11}}
+@media(max-width:640px){.creature{width:85vw; right:-4%; top:2%; opacity:.11}}
 
 /* ===== SECTION LABELS — HUD tag + trailing rule ===== */
 .label{
