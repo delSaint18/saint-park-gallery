@@ -283,24 +283,32 @@ function youtubeId(url){
   var m = String(url).match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|shorts\/|embed\/))([A-Za-z0-9_-]{6,})/);
   return m ? m[1] : null;
 }
+function watchHref(piece, vid){
+  var params = [];
+  if (vid) params.push("v=" + encodeURIComponent(vid));
+  else if (piece.url) params.push("u=" + encodeURIComponent(piece.url));
+  if (piece.title)  params.push("t=" + encodeURIComponent(piece.title));
+  if (piece.artist) params.push("a=" + encodeURIComponent(piece.artist));
+  if (piece.blurb)  params.push("b=" + encodeURIComponent(piece.blurb));
+  if (piece.year)   params.push("y=" + encodeURIComponent(piece.year));
+  return "watch.html" + (params.length ? "?" + params.join("&") : "");
+}
 function buildCard(piece){
   var isVideo = piece.type === "video";
+  var vid = isVideo ? youtubeId(piece.url) : null;
   var a = el("a","piece");
   if (isVideo){
-    a.href = piece.url || "#";
-    a.target = "_blank";
-    a.rel = "noopener noreferrer";
+    a.href = watchHref(piece, vid);
   } else {
     a.href = "./" + encodeURIComponent(piece.slug) + "/";
   }
   a.setAttribute("role","listitem");
-  a.setAttribute("aria-label", piece.title + (piece.artist ? " by " + piece.artist : "") + (isVideo ? " — watch on YouTube" : " — enter"));
+  a.setAttribute("aria-label", piece.title + (piece.artist ? " by " + piece.artist : "") + (isVideo ? " — watch" : " — enter"));
 
   var frame = el("div","frame");
   var thumbSrc = piece.thumb;
-  if (!thumbSrc && isVideo){
-    var yid = youtubeId(piece.url);
-    if (yid) thumbSrc = "https://img.youtube.com/vi/" + yid + "/hqdefault.jpg";
+  if (!thumbSrc && isVideo && vid){
+    thumbSrc = "https://img.youtube.com/vi/" + vid + "/hqdefault.jpg";
   }
   if (thumbSrc){
     var img = document.createElement("img");
