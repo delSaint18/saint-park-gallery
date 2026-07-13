@@ -75,33 +75,40 @@ header{position:relative; padding:64px 0 8px; z-index:1}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
 @media(max-width:640px){.creature{bottom:auto; top:8px; width:88px; opacity:.95}}
 
-/* ===== SECTION LABELS ===== */
+/* ===== SECTION LABELS — HUD tag + trailing rule ===== */
 .label{
-  font-family:var(--sans); font-size:15px; letter-spacing:.28em; text-transform:uppercase;
+  font-family:var(--sans); font-size:13px; letter-spacing:.22em; text-transform:uppercase;
   display:flex; align-items:center; gap:14px; margin:56px 0 26px;
 }
+.label span{background:var(--black); color:var(--white); padding:6px 12px; border:2px solid var(--black)}
 .label::after{content:""; flex:1; height:3px; background:var(--black)}
 
-/* ===== WALL: borderless editorial cards ===== */
+/* ===== WALL: neubrutalist cards — thick border, hard offset shadow ===== */
 .wall{display:grid; grid-template-columns:1fr; gap:40px 28px; padding-bottom:24px}
 @media(min-width:560px){.wall{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:900px){.wall{grid-template-columns:repeat(3,1fr)}}
-.piece{display:block; text-decoration:none; color:var(--black)}
+.piece{
+  display:block; text-decoration:none; color:var(--black);
+  background:var(--white); border:3px solid var(--black);
+  padding:8px 8px 18px; box-shadow:5px 5px 0 var(--black);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.piece:hover,.piece:focus-visible{
+  transform:translate(-3px,-3px);
+  box-shadow:9px 9px 0 var(--black);
+}
 .frame{
   position:relative; aspect-ratio:4/3; overflow:hidden; background:var(--black);
-  transition:transform .22s ease, box-shadow .22s ease;
-}
-.piece:hover .frame,.piece:focus-visible .frame{
-  transform:translateY(-6px);
-  box-shadow:0 14px 0 -6px var(--black);
+  border:2px solid var(--black);
 }
 .frame img{width:100%; height:100%; object-fit:cover; display:block}
 .badge{
   position:absolute; top:8px; left:8px; z-index:2; pointer-events:none;
   font-family:var(--sans); font-size:10.5px; letter-spacing:.16em; text-transform:uppercase;
-  padding:4px 9px; border-radius:999px; background:var(--black); color:var(--white);
+  padding:4px 9px; border:2px solid var(--black); background:var(--black); color:var(--white);
+  box-shadow:3px 3px 0 var(--white);
 }
-.badge.video{background:var(--white); color:var(--black)}
+.badge.video{background:var(--white); color:var(--black); box-shadow:3px 3px 0 var(--black)}
 /* missing thumb: flat black tile, white halo, title */
 .frame.blank{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding:16px}
 .frame.blank .halo{
@@ -124,15 +131,16 @@ header{position:relative; padding:64px 0 8px; z-index:1}
 }
 .caption .go{
   display:inline-block; margin-top:8px; font-family:var(--sans); font-size:13px;
-  letter-spacing:.22em; text-transform:uppercase; border-bottom:3px solid var(--black);
-  padding-bottom:2px;
+  letter-spacing:.22em; text-transform:uppercase; border:2px solid var(--black);
+  padding:5px 10px;
 }
-.piece:hover .go,.piece:focus-visible .go{background:var(--black); color:var(--white); border-bottom-color:var(--black)}
+.piece:hover .go,.piece:focus-visible .go{background:var(--black); color:var(--white)}
 .caption .meta{font-size:13.5px; margin-top:6px; letter-spacing:.14em; text-transform:uppercase; font-family:var(--serif)}
 .caption .meta .star{font-style:normal}
 .notice{
   grid-column:1/-1; text-align:center; padding:56px 20px;
   border:3px dashed var(--black); font-style:italic; font-size:19px;
+  box-shadow:6px 6px 0 var(--black);
 }
 
 /* ===== THE HILL: white rolling hill holds About + Commission ===== */
@@ -147,15 +155,20 @@ header{position:relative; padding:64px 0 8px; z-index:1}
 .about-grid{display:grid; gap:36px; grid-template-columns:1fr}
 @media(min-width:760px){.about-grid{grid-template-columns:1.2fr .8fr}}
 .about p{max-width:58ch; margin-bottom:14px}
-.links{display:flex; flex-wrap:wrap; gap:10px 12px; margin-top:18px}
+.links{display:flex; flex-wrap:wrap; gap:12px 14px; margin-top:18px}
 .links a{
   font-family:var(--sans); font-size:13px; letter-spacing:.14em; text-transform:uppercase;
-  text-decoration:none; color:var(--white); background:var(--black);
-  padding:9px 18px; border-radius:999px;
+  text-decoration:none; color:var(--white); background:var(--black); border:2px solid var(--black);
+  padding:8px 16px; box-shadow:3px 3px 0 var(--blue-deep);
+  transition:transform .15s ease, box-shadow .15s ease;
 }
-.links a:hover{background:var(--blue); color:var(--black); box-shadow:inset 0 0 0 3px var(--black)}
+.links a:hover{
+  background:var(--blue); color:var(--black);
+  transform:translate(-2px,-2px); box-shadow:5px 5px 0 var(--black);
+}
 .commission{
   border:3px solid var(--black); padding:26px 24px 30px; position:relative; background:var(--white);
+  box-shadow:8px 8px 0 var(--black);
 }
 .commission h2{
   font-family:var(--sans); font-weight:400; font-size:clamp(20px,3vw,26px);
@@ -213,7 +226,7 @@ footer .wrap{display:flex; flex-direction:column; gap:16px; align-items:center; 
 </header>
 
 <main class="wrap">
-  <h2 class="label" id="wall-label">On view</h2>
+  <h2 class="label"><span id="wall-label">On view</span></h2>
   <div class="wall" id="wall" role="list">
     <div class="notice" id="wall-notice">opening the gates…</div>
   </div>
@@ -227,7 +240,7 @@ footer .wrap{display:flex; flex-direction:column; gap:16px; align-items:center; 
     <div class="wrap">
       <div class="about-grid">
         <section class="about" id="about">
-          <h2 class="label">About the park</h2>
+          <h2 class="label"><span>About the park</span></h2>
           <p id="bio">Saint Park builds interactive, audio-reactive 3D visualizer sites —
             one hand-made world per song. Click a piece. Turn your sound on.</p>
           <nav class="links" id="links" aria-label="Social links"></nav>
