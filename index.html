@@ -51,13 +51,16 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--black); outline-off
 .cloud.c2{top:120px; right:-70px; width:210px; animation:drift 34s ease-in-out infinite alternate-reverse}
 .cloud.c3{top:40px; left:-60px; width:130px; animation:drift 30s ease-in-out infinite alternate}
 .cloud.c4{bottom:-30px; right:-50px; width:150px; animation:drift 22s ease-in-out infinite alternate-reverse}
-.cloud.c5{top:-24px; right:6%; width:100px; animation:drift 28s ease-in-out infinite alternate}
+.cloud.c5{top:-24px; right:-60px; width:100px; animation:drift 28s ease-in-out infinite alternate}
 @keyframes drift{from{transform:translateX(0)}to{transform:translateX(26px)}}
 
 /* ===== HERO ===== */
 header{position:relative; padding:64px 0 8px; z-index:1}
-header.wrap{display:flex; flex-wrap:wrap; align-items:flex-end; gap:8px 28px}
-.hero-text{flex:1 1 320px; min-width:0}
+header.wrap{display:flex; flex-wrap:wrap; align-items:flex-end; gap:6px 28px}
+/* hero-text always claims the full row on its own — the wordmark is one unbroken
+   word (no space in "SAINTPARK") and can render wider than any shared column, so
+   the creature must never share a flex line with it. flex-basis:100% forces that. */
+.hero-text{flex:1 1 100%; min-width:0}
 .wordmark{
   font-family:var(--sans); font-weight:400;
   font-size:clamp(52px,13.5vw,150px); line-height:.92; letter-spacing:-.02em;
@@ -73,9 +76,10 @@ header.wrap{display:flex; flex-wrap:wrap; align-items:flex-end; gap:8px 28px}
 }
 .tagline em{font-style:italic; font-weight:400}
 /* creature slot — drop creature.png (transparent) at the gallery root; hides itself if missing.
-   Lives in normal flow beside the hero text (flex), so it can never overlap the wordmark. */
+   Always wraps onto its own line below the hero text (see .hero-text flex-basis:100%
+   above), right-aligned via margin-left:auto — can never overlap the wordmark. */
 .creature{
-  flex:0 0 auto; width:clamp(90px,14vw,170px); height:auto; margin-left:auto;
+  flex:0 0 auto; width:clamp(80px,12vw,150px); height:auto; margin-left:auto; margin-top:10px;
   animation:bob 5.5s ease-in-out infinite;
 }
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
