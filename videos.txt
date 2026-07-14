@@ -12,14 +12,8 @@
 # freely, it will never be touched by the sync script.
 
 # ===AUTO-SYNC-START===
-# Everything between these two markers is regenerated automatically by
-# scripts/sync_videos.py (see .github/workflows/sync-videos.yml — runs daily,
-# or trigger it manually from the repo's Actions tab). It pulls your
-# channel's recent uploads and keeps any video with "3D Reactive Music
-# Visualizer" in the title. Don't hand-edit inside this block — it gets
-# overwritten on the next sync.
+https://www.youtube.com/watch?v=oBRVnfm54sM
 https://www.youtube.com/watch?v=RaDepcmXmRw
-https://youtu.be/EtCWpTyRTlc
-https://youtu.be/y_n6A4MyQIA
-https://youtu.be/oBRVnfm54sM?si=R4Y_eD82tyx7-ws9
+https://www.youtube.com/watch?v=EtCWpTyRTlc
+https://www.youtube.com/watch?v=y_n6A4MyQIA
 # ===AUTO-SYNC-END===
