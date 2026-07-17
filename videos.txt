@@ -12,6 +12,7 @@
 # freely, it will never be touched by the sync script.
 
 # ===AUTO-SYNC-START===
+https://www.youtube.com/watch?v=JnrDs_N0yCA
 https://www.youtube.com/watch?v=oBRVnfm54sM
 https://www.youtube.com/watch?v=RaDepcmXmRw
 https://www.youtube.com/watch?v=EtCWpTyRTlc
