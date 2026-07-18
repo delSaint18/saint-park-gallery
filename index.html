@@ -7,10 +7,10 @@
 <meta name="description" content="Saint Park: interactive audio-reactive 3D visualizer sites, one per song. Where the artists go to play.">
 <!-- og: tags — link unfurls in chat apps. -->
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://delsaint18.github.io/saint-park-gallery/">
+<meta property="og:url" content="https://delsaint18.github.io/">
 <meta property="og:title" content="SAINTPARK — where the artists go to play">
 <meta property="og:description" content="Interactive audio-reactive 3D visualizer sites, one per song.">
-<meta property="og:image" content="https://delsaint18.github.io/saint-park-gallery/thumbs/cover.jpg">
+<meta property="og:image" content="https://delsaint18.github.io/thumbs/cover.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,61 +33,60 @@
   </div>
 </div>
 
-<!-- scalloped clouds — data-px is the horizontal parallax direction (-1 drifts left-bleeding
-     clouds further left on scroll, 1 drifts right-bleeding clouds further right) -->
-<svg class="cloud c1" data-px="-1" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
-<svg class="cloud c2" data-px="1" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
-
-<header class="hero wrap">
-  <div class="hero-text">
-    <h1 class="wordmark"><span class="saint">SAINT</span><span class="park">PARK</span></h1>
-    <svg class="halo-pin" viewBox="0 0 20 30" aria-hidden="true">
-      <path class="l" d="M10 0A10 10 0 0 0 0 10c0 7 10 20 10 20z"/>
-      <path class="r" d="M10 0a10 10 0 0 1 10 10c0 7-10 20-10 20z"/>
-    </svg>
-    <p class="tagline" id="tagline">where the artists <em>go to play.</em></p>
-  </div>
-  <!-- transparent creature.png next to index.html; hides itself if the file is missing -->
-  <img class="creature" src="creature.png" alt="" hidden
-       onload="this.hidden=false" onerror="this.remove()">
-</header>
-
-<main class="wrap">
-  <svg class="cloud c3" data-px="-1" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
-  <svg class="cloud c4" data-px="1" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
-  <h2 class="label"><span>Now showing</span></h2>
-  <div class="wall" id="featured" role="list">
-    <div class="notice" id="featured-notice">opening the gates…</div>
-  </div>
-  <p class="see-all"><a class="btn ghost" id="see-all" href="gallery.html">Enter the gallery →</a></p>
-</main>
-
-<div class="hill">
-  <svg class="crest" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
-    <path class="fill" d="M0 120 L0 90 Q 360 0 780 55 Q 1140 100 1440 40 L1440 120 Z"/>
-    <path class="line" d="M0 90 Q 360 0 780 55 Q 1140 100 1440 40"/>
-  </svg>
-  <div class="hill-body">
-    <div class="wrap">
-      <svg class="cloud c5" data-px="1" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
-      <div class="about-grid">
-        <section class="about">
-          <h2 class="label"><span>About the park</span></h2>
-          <p id="bio">Saint Park builds interactive, audio-reactive 3D visualizer sites —
-            one hand-made world per song. Click a piece. Turn your sound on.</p>
-          <a class="more" href="about.html">more about the park →</a>
-        </section>
-        <section class="commission">
-          <h2>Get one for your music</h2>
-          <p id="pitch">Every piece in this park is a commission: a self-contained 3D world
-            that reacts to one song, lives at its own link, and drops straight into your bio.
-            If you want your track in the park, write in.</p>
-          <a class="btn" data-booking href="mailto:delsaintprod@gmail.com?subject=Saint%20Park%20commission">Book a piece →</a>
-        </section>
-      </div>
+<!-- ===== THE GATES — full-viewport poster entrance ===== -->
+<section class="gates">
+  <svg class="cloud c1" data-px="-1" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
+  <svg class="cloud c2" data-px="1" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
+  <div class="wrap gates-inner">
+    <div class="gates-text">
+      <h1 class="wordmark poster"><span class="saint">SAINT</span><br><span class="park">PARK</span></h1>
+      <p class="tagline" id="tagline">where the artists <em>go to play.</em></p>
+      <p class="gates-cta">
+        <a class="btn big" href="gallery.html">Enter the park →</a>
+      </p>
     </div>
+    <!-- the creature, front and center — hides itself if the file is missing -->
+    <img class="creature-poster" src="creature.png" alt="" hidden
+         onload="this.hidden=false" onerror="this.remove()">
   </div>
+  <div class="gates-hill" aria-hidden="true">
+    <svg class="crest" viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path class="fill" d="M0 120 L0 90 Q 360 0 780 55 Q 1140 100 1440 40 L1440 120 Z"/>
+      <path class="line" d="M0 90 Q 360 0 780 55 Q 1140 100 1440 40"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ===== WHITE GROUND: marquee + now showing ===== -->
+<div class="ground">
+  <main class="wrap">
+    <svg class="cloud c5" data-px="1" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
+
+    <h2 class="label"><span>On the marquee</span></h2>
+    <div id="marquee">
+      <div class="notice" id="marquee-notice">opening the gates…</div>
+    </div>
+
+    <h2 class="label"><span>Now showing</span></h2>
+    <div class="wall" id="featured" role="list"></div>
+    <p class="see-all"><a class="btn ghost" id="see-all" href="gallery.html">See everything on view →</a></p>
+  </main>
 </div>
+
+<!-- ===== BLACK BAND: commission + about teaser ===== -->
+<section class="band">
+  <div class="wrap">
+    <p class="band-kicker">Commissions open</p>
+    <h2>Get one<br>for <span class="hl">your</span> music</h2>
+    <p class="band-copy" id="pitch">Every piece in this park is a commission: a self-contained 3D world
+      that reacts to one song, lives at its own link, and drops straight into your bio.
+      If you want your track in the park, write in.</p>
+    <p class="band-cta">
+      <a class="btn invert" data-booking href="mailto:delsaintprod@gmail.com?subject=Saint%20Park%20commission">Book a piece →</a>
+      <a class="more invert" href="about.html">more about the park →</a>
+    </p>
+  </div>
+</section>
 
 <footer>
   <div class="wrap">

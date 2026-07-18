@@ -97,6 +97,57 @@ function buildCard(piece){
   return a;
 }
 
+/* -------- marquee: the headliner piece, poster-of-the-week size -------- */
+function buildMarquee(piece){
+  var isVideo = piece.type === "video";
+  var vid = isVideo ? youtubeId(piece.url) : null;
+  var a = el("a","marquee-link");
+  a.href = isVideo ? watchHref(piece, vid) : ("./" + encodeURIComponent(piece.slug) + "/");
+  a.setAttribute("aria-label", piece.title + (piece.artist ? " by " + piece.artist : "") + (isVideo ? " — watch" : " — enter"));
+
+  var frame = el("div","mframe");
+  var thumbSrc = piece.thumb;
+  if (!thumbSrc && isVideo && vid){
+    // prefer the HQ poster frame for the big slot; fall back handled by onerror
+    thumbSrc = "https://img.youtube.com/vi/" + vid + "/maxresdefault.jpg";
+  }
+  if (thumbSrc){
+    var img = document.createElement("img");
+    img.src = thumbSrc;
+    img.alt = "";
+    img.decoding = "async";
+    img.addEventListener("error", function(){
+      if (isVideo && vid && img.src.indexOf("maxresdefault") !== -1){
+        img.src = "https://img.youtube.com/vi/" + vid + "/hqdefault.jpg";
+      } else {
+        frame.innerHTML = "";
+        frame.classList.add("blank");
+        frame.appendChild(el("span","halo"));
+        frame.appendChild(el("span","t", piece.title));
+      }
+    });
+    frame.appendChild(img);
+  } else {
+    frame.classList.add("blank");
+    frame.appendChild(el("span","halo"));
+    frame.appendChild(el("span","t", piece.title));
+  }
+  frame.appendChild(el("span","badge" + (isVideo ? " video" : ""), isVideo ? "MP4" : "HTML"));
+  a.appendChild(frame);
+
+  var info = el("div","minfo");
+  info.appendChild(el("h3", null, piece.title));
+  if (piece.artist) info.appendChild(el("p","by","by " + piece.artist));
+  if (piece.blurb)  info.appendChild(el("p","blurb", piece.blurb));
+  var meta = el("p","meta");
+  if (piece.pinned) meta.appendChild(el("span","star","★ featured  "));
+  if (piece.year)   meta.appendChild(el("span",null,String(piece.year)));
+  if (meta.childNodes.length) info.appendChild(meta);
+  info.appendChild(el("span","go", isVideo ? "Watch it →" : "Step inside →"));
+  a.appendChild(info);
+  return a;
+}
+
 /* -------- merge ring.json + manifest.json -------- */
 function mergePieces(ring, manifest){
   var bySlug = {};
@@ -217,8 +268,9 @@ Promise.all([loadJSON("ring.json"), loadJSON("manifest.json"), loadText("videos.
   initWebring(ring);
 
   var wall = byId("wall");           // gallery.html: everything
-  var featured = byId("featured");   // index.html: first few
-  if (!wall && !featured) return;
+  var featured = byId("featured");   // index.html: "now showing" strip
+  var marquee = byId("marquee");     // index.html: poster of the week
+  if (!wall && !featured && !marquee) return;
 
   parseVideoLines(videosTxt).then(function(videoPieces){
     var pieces = sortPinned(mergePieces(ring, manifest).concat(videoPieces));
@@ -239,18 +291,29 @@ Promise.all([loadJSON("ring.json"), loadJSON("manifest.json"), loadText("videos.
       if (lbl) lbl.textContent = "On view · " + pieces.length + (pieces.length === 1 ? " piece" : " pieces");
     }
 
-    if (featured){
-      var noticeF = byId("featured-notice");
+    if (marquee){
+      var noticeM = byId("marquee-notice");
       if (!pieces.length){
-        if (noticeF) noticeF.textContent = "The park is being planted — first pieces coming soon.";
-        return;
+        if (noticeM) noticeM.textContent = "The park is being planted — first pieces coming soon.";
+      } else {
+        if (noticeM) noticeM.remove();
+        marquee.appendChild(buildMarquee(pieces[0]));
       }
-      if (noticeF) noticeF.remove();
+    }
+
+    if (featured){
+      // marquee takes the headliner; the strip shows the next three
+      var strip = marquee ? pieces.slice(1, 4) : pieces.slice(0, 3);
       var fragF = document.createDocumentFragment();
-      pieces.slice(0, 3).forEach(function(p){ fragF.appendChild(buildCard(p)); });
+      strip.forEach(function(p){ fragF.appendChild(buildCard(p)); });
       featured.appendChild(fragF);
+      if (!strip.length){
+        var prevLabel = featured.previousElementSibling;   // hide the "Now showing" label…
+        if (prevLabel && prevLabel.classList.contains("label")) prevLabel.remove();
+        featured.remove();                                  // …and the empty grid
+      }
       var seeAll = byId("see-all");
-      if (seeAll) seeAll.textContent = "Enter the gallery · " + pieces.length + (pieces.length === 1 ? " piece" : " pieces") + " →";
+      if (seeAll && pieces.length) seeAll.textContent = "See everything on view · " + pieces.length + (pieces.length === 1 ? " piece" : " pieces") + " →";
     }
   });
 });
@@ -259,7 +322,7 @@ Promise.all([loadJSON("ring.json"), loadJSON("manifest.json"), loadText("videos.
    further off to their side — both skip entirely under prefers-reduced-motion -------- */
 (function(){
   if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  var creature = document.querySelector(".creature");
+  var creature = document.querySelector(".creature, .creature-poster");
   var clouds = Array.prototype.slice.call(document.querySelectorAll(".cloud"));
   if (!creature && !clouds.length) return;
   var ticking = false;

@@ -101,6 +101,112 @@ header.hero{position:relative; padding:56px 0 8px; z-index:1}
 @keyframes bob{0%,100%{translate:0 0}50%{translate:0 -14px}}
 @media(max-width:640px){.creature{width:85vw; right:-4%; top:2%; opacity:.11}}
 
+/* ===== THE GATES — full-viewport poster entrance (homepage) ===== */
+.gates{
+  position:relative; z-index:1;
+  min-height:calc(100svh - 62px);   /* fill the first screen below the sticky nav */
+  display:flex; flex-direction:column; justify-content:center;
+  overflow:hidden;
+}
+.gates-inner{
+  display:grid; grid-template-columns:1fr; gap:10px 24px;
+  align-items:center; width:100%;
+  padding-top:34px; padding-bottom:clamp(120px,18vw,220px);  /* room for the hill */
+}
+@media(min-width:760px){
+  .gates-inner{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)}
+}
+.gates-text{position:relative; z-index:2}
+.wordmark.poster{
+  font-size:clamp(64px,15vw,180px); line-height:.88;
+}
+.wordmark.poster .saint{
+  color:var(--white);
+  text-shadow:4px 4px 0 var(--black);
+}
+.gates .tagline{margin-top:18px}
+.gates-cta{margin-top:26px}
+.btn.big{
+  font-size:clamp(15px,2.2vw,19px); padding:17px 30px;
+  box-shadow:6px 6px 0 var(--blue-deep);
+}
+.btn.big:hover{box-shadow:9px 9px 0 var(--blue-deep)}
+/* the creature, full strength — a character in the scene, not a watermark */
+.creature-poster{
+  position:relative; z-index:1; justify-self:center;
+  width:clamp(230px,34vw,470px); height:auto;
+  filter:drop-shadow(10px 12px 0 rgba(13,13,13,.18));
+  animation:bob 9s ease-in-out infinite;
+}
+@media(max-width:759px){
+  .gates-inner{justify-items:start; padding-top:18px}
+  .creature-poster{
+    justify-self:center; margin-top:22px;
+    width:clamp(180px,52vw,270px);
+  }
+  .cloud.c2{top:60px}
+}
+/* white hill pinned to the bottom of the gates — the ground the button stands on */
+.gates-hill{position:absolute; left:0; right:0; bottom:-2px; pointer-events:none}
+.gates-hill .crest{display:block; width:100%; height:clamp(90px,16vw,210px)}
+.gates-hill .crest .fill{fill:var(--white)}
+.gates-hill .crest .line{fill:none; stroke:var(--black); stroke-width:5; vector-effect:non-scaling-stroke}
+
+/* ===== WHITE GROUND under the gates (marquee + now showing) ===== */
+.ground{background:var(--white); position:relative; z-index:1; padding:34px 0 64px}
+.ground .label{margin-top:0}
+.ground h2.label:nth-of-type(2){margin-top:64px}
+
+/* ===== ON THE MARQUEE — poster of the week ===== */
+.marquee-link{
+  display:grid; gap:26px 40px; grid-template-columns:1fr;
+  text-decoration:none; color:var(--black); align-items:center;
+}
+@media(min-width:820px){.marquee-link{grid-template-columns:1.15fr .85fr}}
+.mframe{
+  position:relative; aspect-ratio:16/10; overflow:hidden; background:var(--black);
+  border:4px solid var(--black); box-shadow:12px 12px 0 var(--black);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.marquee-link:hover .mframe,.marquee-link:focus-visible .mframe{
+  transform:translate(-4px,-4px); box-shadow:16px 16px 0 var(--black);
+}
+.mframe img{width:100%; height:100%; object-fit:cover; display:block}
+.mframe .badge{top:12px; left:12px}
+.mframe.blank{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; padding:20px}
+.mframe.blank .halo{width:100px; height:34px; border:5px solid var(--white); border-radius:50%; transform:rotate(-8deg)}
+.mframe.blank .t{font-family:var(--sans); color:var(--white); font-size:26px; text-transform:uppercase; text-align:center; line-height:1.1}
+.minfo h3{
+  font-family:var(--sans); font-weight:400;
+  font-size:clamp(30px,5vw,54px); line-height:1; text-transform:uppercase; letter-spacing:-.01em;
+}
+.minfo .by{font-style:italic; font-size:19px; margin-top:8px}
+.minfo .blurb{font-size:17px; margin-top:14px; max-width:44ch}
+.minfo .meta{font-size:14px; margin-top:12px; letter-spacing:.16em; text-transform:uppercase; font-family:var(--serif)}
+.minfo .go{
+  display:inline-block; margin-top:20px; font-family:var(--sans); font-size:14px;
+  letter-spacing:.2em; text-transform:uppercase; border:3px solid var(--black); padding:10px 18px;
+}
+.marquee-link:hover .go,.marquee-link:focus-visible .go{background:var(--black); color:var(--white)}
+
+/* ===== BLACK BAND — commission, editorial ===== */
+.band{background:var(--black); color:var(--white); position:relative; z-index:1; padding:76px 0 84px}
+.band-kicker{
+  font-family:var(--sans); font-size:13px; letter-spacing:.26em; text-transform:uppercase;
+  color:var(--blue); margin-bottom:18px;
+}
+.band h2{
+  font-family:var(--sans); font-weight:400;
+  font-size:clamp(38px,7.5vw,84px); line-height:.95; text-transform:uppercase; letter-spacing:-.01em;
+}
+.band h2 .hl{color:var(--blue)}
+.band-copy{font-size:17.5px; max-width:56ch; margin-top:22px; color:#e8f4fb}
+.band-cta{margin-top:30px; display:flex; align-items:center; gap:16px 26px; flex-wrap:wrap}
+.btn.invert{background:var(--white); color:var(--black); box-shadow:6px 6px 0 var(--blue-deep)}
+.btn.invert:hover{box-shadow:9px 9px 0 var(--blue-deep)}
+.more.invert{color:var(--white); border-bottom-color:var(--blue)}
+.more.invert:hover{background:var(--white); color:var(--black)}
+
 /* ===== PAGE HEAD (subpages: gallery / about / watch) ===== */
 .page-head{position:relative; padding:44px 0 6px; z-index:1}
 .page-head h1{
@@ -252,7 +358,7 @@ header.hero{position:relative; padding:56px 0 8px; z-index:1}
 .watch-meta .year{font-size:14px; margin-top:10px; letter-spacing:.14em; text-transform:uppercase; font-family:var(--sans); opacity:.75}
 
 /* ===== FOOTER: black strip ===== */
-footer{background:var(--black); color:var(--white); padding:34px 0 46px; position:relative; z-index:1; margin-top:auto}
+footer{background:var(--black); color:var(--white); padding:34px 0 46px; position:relative; z-index:1; margin-top:auto; border-top:3px solid var(--blue-deep)}
 footer .wrap{display:flex; flex-direction:column; gap:16px; align-items:center; text-align:center}
 footer a{color:var(--white)}
 .foot-nav{display:flex; gap:4px 18px; flex-wrap:wrap; justify-content:center}
