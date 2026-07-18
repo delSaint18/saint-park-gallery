@@ -8,70 +8,27 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<style>
-:root{
-  --blue:#a9d9f2; --blue-deep:#8fcdee; --black:#0d0d0d; --white:#ffffff;
-  --sans:'Archivo Black','Arial Black',sans-serif; --serif:'Lora',Georgia,serif;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{background:var(--blue)}
-body{font-family:var(--serif); font-size:18px; line-height:1.55; color:var(--black); background:var(--blue); min-height:100vh}
-a{color:var(--black)}
-a:focus-visible,button:focus-visible{outline:3px solid var(--black); outline-offset:3px}
-.wrap{max-width:920px; margin:0 auto; padding:0 20px}
-
-header{padding:26px 0 10px}
-.back{
-  display:inline-flex; align-items:center; gap:8px; text-decoration:none;
-  font-family:var(--sans); font-size:13px; letter-spacing:.18em; text-transform:uppercase;
-  background:var(--black); color:var(--white); border:2px solid var(--black);
-  padding:8px 14px; box-shadow:3px 3px 0 var(--blue-deep);
-  transition:transform .15s ease, box-shadow .15s ease;
-}
-.back:hover{transform:translate(-2px,-2px); box-shadow:5px 5px 0 var(--black)}
-
-main{padding:14px 0 60px}
-.video-wrap{
-  position:relative; width:100%; aspect-ratio:16/9; background:var(--black);
-  overflow:hidden; border:3px solid var(--black); box-shadow:8px 8px 0 var(--black);
-}
-.video-wrap iframe{position:absolute; inset:0; width:100%; height:100%; border:0}
-.video-wrap .fallback{
-  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-  color:var(--white); font-family:var(--sans); text-align:center; padding:20px; text-transform:uppercase;
-}
-
-.meta{padding-top:26px}
-.badge{
-  display:inline-block; font-family:var(--sans); font-size:11px; letter-spacing:.16em;
-  text-transform:uppercase; background:var(--black); color:var(--white); border:2px solid var(--black);
-  padding:5px 12px; box-shadow:3px 3px 0 var(--white); margin-bottom:12px;
-}
-h1{
-  font-family:var(--sans); font-weight:400; font-size:clamp(24px,4.4vw,38px);
-  line-height:1.08; text-transform:uppercase; letter-spacing:-.01em;
-}
-.by{font-style:italic; font-size:18px; margin-top:6px}
-.blurb{font-size:16.5px; margin-top:12px; max-width:60ch}
-.year{font-size:14px; margin-top:10px; letter-spacing:.14em; text-transform:uppercase; font-family:var(--sans); opacity:.75}
-
-footer{background:var(--black); color:var(--white); padding:30px 0 42px; margin-top:40px}
-footer .wrap{display:flex; flex-direction:column; gap:10px; align-items:center; text-align:center}
-footer a{color:var(--white)}
-.fine{font-style:italic; font-size:15px; color:#cfe9f8}
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<header class="wrap">
-  <a class="back" href="./">← saintpark</a>
-</header>
-
-<main class="wrap">
-  <div class="video-wrap" id="videoWrap">
-    <p class="fallback" id="fallback" hidden>Couldn't find that video — <a href="./" style="color:inherit">head back to the park</a>.</p>
+<div class="topnav">
+  <div class="bar">
+    <a class="mark" href="./" aria-label="SAINTPARK home"><span class="saint">SAINT</span><span class="park">PARK</span></a>
+    <nav aria-label="Site">
+      <a href="./">The Park</a>
+      <a href="gallery.html" aria-current="page">Gallery</a>
+      <a href="about.html">About</a>
+      <a class="book" href="mailto:delsaintprod@gmail.com?subject=Saint%20Park%20commission">Book a piece</a>
+    </nav>
   </div>
-  <div class="meta">
+</div>
+
+<main class="wrap" style="padding-top:26px; padding-bottom:60px">
+  <div class="video-wrap" id="videoWrap">
+    <p class="fallback" id="fallback" hidden>Couldn't find that video — <a href="gallery.html" style="color:inherit">head back to the gallery</a>.</p>
+  </div>
+  <div class="watch-meta">
     <span class="badge">MP4</span>
     <h1 id="title">Loading…</h1>
     <p class="by" id="by" hidden></p>
@@ -82,7 +39,11 @@ footer a{color:var(--white)}
 
 <footer>
   <div class="wrap">
-    <a href="./">← back to the park</a>
+    <nav class="foot-nav" aria-label="Footer">
+      <a href="./">The Park</a>
+      <a href="gallery.html">← back to the gallery</a>
+      <a href="about.html">About</a>
+    </nav>
     <p class="fine">SAINTPARK · every piece is a song</p>
   </div>
 </footer>

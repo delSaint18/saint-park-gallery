@@ -3,3 +3,4 @@ Thumbs.db
 .claude/
 __pycache__/
 *.pyc
+_to_delete/

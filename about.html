@@ -3,13 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SAINTPARK — where the artists go to play</title>
-<meta name="description" content="Saint Park: interactive audio-reactive 3D visualizer sites, one per song. Where the artists go to play.">
-<!-- og: tags — link unfurls in chat apps. -->
+<title>SAINTPARK — about the park</title>
+<meta name="description" content="About Saint Park — digital snapshots and music visualizers by delSaint. A place for artists to meet and create.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://delsaint18.github.io/saint-park-gallery/">
-<meta property="og:title" content="SAINTPARK — where the artists go to play">
-<meta property="og:description" content="Interactive audio-reactive 3D visualizer sites, one per song.">
+<meta property="og:url" content="https://delsaint18.github.io/saint-park-gallery/about.html">
+<meta property="og:title" content="SAINTPARK — about the park">
+<meta property="og:description" content="A place for artists to meet and create. Welcome to the park.">
 <meta property="og:image" content="https://delsaint18.github.io/saint-park-gallery/thumbs/cover.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,57 +24,40 @@
   <div class="bar">
     <a class="mark" href="./" aria-label="SAINTPARK home"><span class="saint">SAINT</span><span class="park">PARK</span></a>
     <nav aria-label="Site">
-      <a href="./" aria-current="page">The Park</a>
+      <a href="./">The Park</a>
       <a href="gallery.html">Gallery</a>
-      <a href="about.html">About</a>
+      <a href="about.html" aria-current="page">About</a>
       <a class="book" data-booking href="mailto:delsaintprod@gmail.com?subject=Saint%20Park%20commission">Book a piece</a>
     </nav>
   </div>
 </div>
 
-<!-- scalloped clouds — data-px is the horizontal parallax direction (-1 drifts left-bleeding
-     clouds further left on scroll, 1 drifts right-bleeding clouds further right) -->
 <svg class="cloud c1" data-px="-1" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
 <svg class="cloud c2" data-px="1" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
 
-<header class="hero wrap">
-  <div class="hero-text">
-    <h1 class="wordmark"><span class="saint">SAINT</span><span class="park">PARK</span></h1>
-    <svg class="halo-pin" viewBox="0 0 20 30" aria-hidden="true">
-      <path class="l" d="M10 0A10 10 0 0 0 0 10c0 7 10 20 10 20z"/>
-      <path class="r" d="M10 0a10 10 0 0 1 10 10c0 7-10 20-10 20z"/>
-    </svg>
-    <p class="tagline" id="tagline">where the artists <em>go to play.</em></p>
-  </div>
-  <!-- transparent creature.png next to index.html; hides itself if the file is missing -->
-  <img class="creature" src="creature.png" alt="" hidden
-       onload="this.hidden=false" onerror="this.remove()">
+<header class="page-head wrap">
+  <h1><span class="lite">ABOUT</span> THE PARK</h1>
+  <p class="sub">Every piece is a song — hand-made worlds that listen.</p>
 </header>
 
-<main class="wrap">
-  <svg class="cloud c3" data-px="-1" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
-  <svg class="cloud c4" data-px="1" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
-  <h2 class="label"><span>Now showing</span></h2>
-  <div class="wall" id="featured" role="list">
-    <div class="notice" id="featured-notice">opening the gates…</div>
-  </div>
-  <p class="see-all"><a class="btn ghost" id="see-all" href="gallery.html">Enter the gallery →</a></p>
-</main>
-
-<div class="hill">
+<div class="hill" style="margin-top:34px">
   <svg class="crest" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
     <path class="fill" d="M0 120 L0 90 Q 360 0 780 55 Q 1140 100 1440 40 L1440 120 Z"/>
     <path class="line" d="M0 90 Q 360 0 780 55 Q 1140 100 1440 40"/>
   </svg>
   <div class="hill-body">
-    <div class="wrap">
+    <main class="wrap">
       <svg class="cloud c5" data-px="1" viewBox="0 0 100 60" aria-hidden="true"><path d="M18 60a14 14 0 0 1-4-27 16 16 0 0 1 28-12 15 15 0 0 1 26 3 13 13 0 0 1 14 21 12 12 0 0 1-10 15z"/></svg>
       <div class="about-grid">
         <section class="about">
-          <h2 class="label"><span>About the park</span></h2>
+          <h2 class="label"><span>The story</span></h2>
           <p id="bio">Saint Park builds interactive, audio-reactive 3D visualizer sites —
             one hand-made world per song. Click a piece. Turn your sound on.</p>
-          <a class="more" href="about.html">more about the park →</a>
+          <p>Two kinds of pieces hang in the gallery: interactive worlds you can move
+            through (badge: HTML) and video pieces (badge: MP4). New pieces are added
+            as they're made — the park keeps growing.</p>
+          <h2 class="label"><span>Find delSaint</span></h2>
+          <nav class="links" id="links" aria-label="Social links"></nav>
         </section>
         <section class="commission">
           <h2>Get one for your music</h2>
@@ -85,7 +67,7 @@
           <a class="btn" data-booking href="mailto:delsaintprod@gmail.com?subject=Saint%20Park%20commission">Book a piece →</a>
         </section>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 

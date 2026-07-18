@@ -1,0 +1,281 @@
+/* ===== SAINTPARK — shared design system: black / white / blue ============
+   Loaded by every page (index, gallery, about, watch). Page-specific bits
+   live at the bottom under their own banner comments. */
+:root{
+  --blue:#a9d9f2;
+  --blue-deep:#8fcdee;
+  --black:#0d0d0d;
+  --white:#ffffff;
+  --sans:'Archivo Black', 'Arial Black', sans-serif;
+  --serif:'Lora', Georgia, serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none !important}
+html{background:var(--blue)}
+body{
+  font-family:var(--serif); font-size:18px; line-height:1.55; color:var(--black);
+  background:var(--blue); min-height:100vh; overflow-x:hidden;
+}
+/* faint concentric circles, like the poster's ripple */
+.ripple{
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image:radial-gradient(circle at 50% 42%,
+    transparent 0 119px, #ffffff2e 119px 122px,
+    transparent 122px 239px, #ffffff2e 239px 242px,
+    transparent 242px 379px, #ffffff2e 379px 382px,
+    transparent 382px 539px, #ffffff2e 539px 542px,
+    transparent 542px);
+}
+a{color:var(--black)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--black); outline-offset:3px}
+.wrap{max-width:1060px; margin:0 auto; padding:0 20px; position:relative; z-index:1}
+
+/* ===== TOP NAV — sticky strip, neubrutalist chips ===== */
+.topnav{
+  position:sticky; top:0; z-index:20;
+  background:var(--blue); border-bottom:3px solid var(--black);
+}
+.topnav .bar{
+  max-width:1060px; margin:0 auto; padding:12px 20px;
+  display:flex; align-items:center; justify-content:space-between; gap:12px 18px; flex-wrap:wrap;
+}
+.topnav .mark{
+  font-family:var(--sans); font-size:21px; line-height:1; letter-spacing:-.01em;
+  text-transform:uppercase; text-decoration:none;
+}
+.topnav .mark .saint{color:var(--white); text-shadow:1.5px 1.5px 0 var(--black)}
+.topnav .mark .park{color:var(--black)}
+.topnav nav{display:flex; gap:8px 10px; flex-wrap:wrap; align-items:center}
+.topnav nav a{
+  font-family:var(--sans); font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+  text-decoration:none; color:var(--black); background:var(--white);
+  border:2px solid var(--black); padding:7px 12px; box-shadow:3px 3px 0 var(--black);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.topnav nav a:hover{transform:translate(-2px,-2px); box-shadow:5px 5px 0 var(--black)}
+.topnav nav a[aria-current="page"]{
+  background:var(--black); color:var(--white); box-shadow:3px 3px 0 var(--blue-deep);
+}
+.topnav nav a.book{background:var(--black); color:var(--white); box-shadow:3px 3px 0 var(--white)}
+.topnav nav a.book:hover{background:var(--white); color:var(--black); box-shadow:5px 5px 0 var(--black)}
+
+/* ===== scalloped black clouds (poster corners) — bleed off the side edges ===== */
+.cloud{
+  position:absolute; z-index:0; pointer-events:none; fill:var(--black); opacity:.9;
+  filter:drop-shadow(3px 5px 4px rgba(0,0,0,.35));
+}
+.cloud.c1{top:-38px; left:-46px; width:170px; animation:drift 26s ease-in-out infinite alternate}
+.cloud.c2{top:120px; right:-70px; width:210px; animation:drift 34s ease-in-out infinite alternate-reverse}
+.cloud.c3{top:40px; left:-60px; width:130px; animation:drift 30s ease-in-out infinite alternate}
+.cloud.c4{bottom:-30px; right:-50px; width:150px; animation:drift 22s ease-in-out infinite alternate-reverse}
+.cloud.c5{top:-24px; right:-60px; width:100px; animation:drift 28s ease-in-out infinite alternate}
+/* drift/bob animate the standalone "translate" property (not "transform") so the JS
+   scroll-parallax can drive "transform" on the same elements without fighting the
+   animation — the two properties compose instead of overriding each other. */
+@keyframes drift{from{translate:0 0}to{translate:26px 0}}
+
+/* ===== HERO (homepage) ===== */
+header.hero{position:relative; padding:56px 0 8px; z-index:1}
+.hero-text{position:relative; z-index:1}
+.wordmark{
+  font-family:var(--sans); font-weight:400;
+  font-size:clamp(52px,13.5vw,150px); line-height:.92; letter-spacing:-.02em;
+  text-transform:uppercase; word-break:keep-all;
+}
+.wordmark .saint{color:var(--white)}
+.wordmark .park{color:var(--black)}
+.halo-pin{display:block; margin:14px 2px 10px; width:20px; height:auto}
+.halo-pin .l{fill:var(--white)} .halo-pin .r{fill:var(--black)}
+.tagline{
+  font-family:var(--serif); font-weight:600; font-size:clamp(20px,3.4vw,30px);
+  line-height:1.25; max-width:14em;
+}
+.tagline em{font-style:italic; font-weight:400}
+/* creature watermark — hides itself if creature.png is missing */
+.creature{
+  position:absolute; z-index:0; pointer-events:none;
+  right:calc(-4% + 160px); top:-1%; width:clamp(330px,51vw,720px); height:auto;
+  opacity:.1;
+  animation:bob 10s ease-in-out infinite;
+}
+@keyframes bob{0%,100%{translate:0 0}50%{translate:0 -14px}}
+@media(max-width:640px){.creature{width:85vw; right:-4%; top:2%; opacity:.11}}
+
+/* ===== PAGE HEAD (subpages: gallery / about / watch) ===== */
+.page-head{position:relative; padding:44px 0 6px; z-index:1}
+.page-head h1{
+  font-family:var(--sans); font-weight:400;
+  font-size:clamp(36px,8vw,84px); line-height:.95; letter-spacing:-.02em;
+  text-transform:uppercase;
+}
+.page-head h1 .lite{color:var(--white)}
+.page-head .sub{
+  font-style:italic; font-size:clamp(17px,2.6vw,22px); margin-top:10px; max-width:36em;
+}
+
+/* ===== SECTION LABELS — HUD tag + trailing rule ===== */
+.label{
+  font-family:var(--sans); font-size:13px; letter-spacing:.22em; text-transform:uppercase;
+  display:flex; align-items:center; gap:14px; margin:56px 0 26px;
+}
+.label span{background:var(--black); color:var(--white); padding:6px 12px; border:2px solid var(--black)}
+.label::after{content:""; flex:1; height:3px; background:var(--black)}
+
+/* ===== WALL: neubrutalist cards — thick border, hard offset shadow ===== */
+.wall{display:grid; grid-template-columns:1fr; gap:40px 28px; padding-bottom:24px}
+@media(min-width:560px){.wall{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:900px){.wall{grid-template-columns:repeat(3,1fr)}}
+.piece{
+  display:block; text-decoration:none; color:var(--black);
+  background:var(--white); border:3px solid var(--black);
+  padding:8px 8px 18px; box-shadow:5px 5px 0 var(--black);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.piece:hover,.piece:focus-visible{
+  transform:translate(-3px,-3px);
+  box-shadow:9px 9px 0 var(--black);
+}
+.frame{
+  position:relative; aspect-ratio:4/3; overflow:hidden; background:var(--black);
+  border:2px solid var(--black);
+}
+.frame img{width:100%; height:100%; object-fit:cover; display:block}
+.badge{
+  position:absolute; top:8px; left:8px; z-index:2; pointer-events:none;
+  font-family:var(--sans); font-size:10.5px; letter-spacing:.16em; text-transform:uppercase;
+  padding:4px 9px; border:2px solid var(--black); background:var(--black); color:var(--white);
+  box-shadow:3px 3px 0 var(--white);
+}
+.badge.video{background:var(--white); color:var(--black); box-shadow:3px 3px 0 var(--black)}
+/* missing thumb: flat black tile, white halo, title */
+.frame.blank{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding:16px}
+.frame.blank .halo{
+  width:74px; height:26px; border:4px solid var(--white); border-radius:50%;
+  transform:rotate(-8deg);
+}
+.frame.blank .t{
+  font-family:var(--sans); color:var(--white); font-size:18px; text-transform:uppercase;
+  letter-spacing:.04em; text-align:center; line-height:1.15; word-break:break-word;
+}
+.caption{padding-top:12px}
+.caption h3{
+  font-family:var(--sans); font-weight:400; font-size:19px; line-height:1.1;
+  text-transform:uppercase; letter-spacing:.01em;
+}
+.caption .by{font-style:italic; font-size:16px; margin-top:2px}
+.caption .blurb{
+  font-size:15.5px; margin-top:6px; color:#1c1c1c;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+}
+.caption .go{
+  display:inline-block; margin-top:8px; font-family:var(--sans); font-size:13px;
+  letter-spacing:.22em; text-transform:uppercase; border:2px solid var(--black);
+  padding:5px 10px;
+}
+.piece:hover .go,.piece:focus-visible .go{background:var(--black); color:var(--white)}
+.caption .meta{font-size:13.5px; margin-top:6px; letter-spacing:.14em; text-transform:uppercase; font-family:var(--serif)}
+.caption .meta .star{font-style:normal}
+.notice{
+  grid-column:1/-1; text-align:center; padding:56px 20px;
+  border:3px dashed var(--black); font-style:italic; font-size:19px;
+  box-shadow:6px 6px 0 var(--black);
+}
+/* "see everything" row under the featured strip on the homepage */
+.see-all{padding:6px 0 10px}
+
+/* ===== THE HILL: white rolling hill section ===== */
+.hill{position:relative; margin-top:64px; z-index:1}
+.hill .crest{display:block; width:100%; height:clamp(90px,16vw,210px)}
+.hill .crest .fill{fill:var(--white)}
+.hill .crest .line{fill:none; stroke:var(--black); stroke-width:5; vector-effect:non-scaling-stroke}
+.hill-body{background:var(--white); padding:8px 0 72px}
+.hill-body .label::after{background:var(--black)}
+.about-grid{display:grid; gap:36px; grid-template-columns:1fr; align-items:start}
+@media(min-width:760px){.about-grid{grid-template-columns:1.2fr .8fr}}
+.about p{max-width:58ch; margin-bottom:14px}
+.links{display:flex; flex-wrap:wrap; gap:12px 14px; margin-top:18px}
+.links a{
+  font-family:var(--sans); font-size:13px; letter-spacing:.14em; text-transform:uppercase;
+  text-decoration:none; color:var(--white); background:var(--black); border:2px solid var(--black);
+  padding:8px 16px; box-shadow:3px 3px 0 var(--blue-deep);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.links a:hover{
+  background:var(--blue); color:var(--black);
+  transform:translate(-2px,-2px); box-shadow:5px 5px 0 var(--black);
+}
+.commission{
+  border:3px solid var(--black); padding:26px 24px 30px; position:relative; background:var(--white);
+  box-shadow:8px 8px 0 var(--black);
+}
+.commission h2{
+  font-family:var(--sans); font-weight:400; font-size:clamp(20px,3vw,26px);
+  text-transform:uppercase; line-height:1.15; margin-bottom:12px;
+}
+.commission p{font-size:16.5px; margin-bottom:18px}
+.btn{
+  display:inline-block; font-family:var(--sans); font-size:15px; letter-spacing:.16em;
+  text-transform:uppercase; text-decoration:none; color:var(--white); background:var(--black);
+  padding:14px 26px; transition:transform .15s ease, box-shadow .15s ease;
+}
+.btn:hover{transform:translate(-3px,-3px); box-shadow:6px 6px 0 var(--blue-deep)}
+.btn.ghost{
+  background:var(--white); color:var(--black); border:3px solid var(--black);
+}
+.btn.ghost:hover{box-shadow:6px 6px 0 var(--black)}
+/* small inline arrow-link used for "more about the park →" etc. */
+.more{
+  display:inline-block; margin-top:6px; font-family:var(--sans); font-size:13px;
+  letter-spacing:.18em; text-transform:uppercase; text-decoration:none;
+  border-bottom:3px solid var(--black); padding-bottom:2px;
+}
+.more:hover{background:var(--black); color:var(--white)}
+
+/* ===== WATCH PAGE ===== */
+.video-wrap{
+  position:relative; width:100%; aspect-ratio:16/9; background:var(--black);
+  overflow:hidden; border:3px solid var(--black); box-shadow:8px 8px 0 var(--black);
+}
+.video-wrap iframe{position:absolute; inset:0; width:100%; height:100%; border:0}
+.video-wrap .fallback{
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  color:var(--white); font-family:var(--sans); text-align:center; padding:20px; text-transform:uppercase;
+}
+.watch-meta{padding-top:26px}
+.watch-meta .badge{position:static; display:inline-block; pointer-events:auto; margin-bottom:12px}
+.watch-meta h1{
+  font-family:var(--sans); font-weight:400; font-size:clamp(24px,4.4vw,38px);
+  line-height:1.08; text-transform:uppercase; letter-spacing:-.01em;
+}
+.watch-meta .by{font-style:italic; font-size:18px; margin-top:6px}
+.watch-meta .blurb{font-size:16.5px; margin-top:12px; max-width:60ch; display:block; -webkit-line-clamp:unset}
+.watch-meta .year{font-size:14px; margin-top:10px; letter-spacing:.14em; text-transform:uppercase; font-family:var(--sans); opacity:.75}
+
+/* ===== FOOTER: black strip ===== */
+footer{background:var(--black); color:var(--white); padding:34px 0 46px; position:relative; z-index:1; margin-top:auto}
+footer .wrap{display:flex; flex-direction:column; gap:16px; align-items:center; text-align:center}
+footer a{color:var(--white)}
+.foot-nav{display:flex; gap:4px 18px; flex-wrap:wrap; justify-content:center}
+.foot-nav a{
+  font-family:var(--sans); font-size:12px; letter-spacing:.18em; text-transform:uppercase;
+  text-decoration:none; padding:6px 10px;
+}
+.foot-nav a:hover{background:var(--white); color:var(--black)}
+.webring{display:flex; gap:2px; align-items:center; flex-wrap:wrap; justify-content:center}
+.webring .tag{
+  font-family:var(--sans); font-size:12px; letter-spacing:.26em; text-transform:uppercase;
+  padding:0 12px; color:var(--blue);
+}
+.webring a{
+  color:var(--white); text-decoration:none; font-family:var(--sans); font-size:13px;
+  letter-spacing:.14em; text-transform:uppercase; padding:6px 12px;
+}
+.webring a:hover{background:var(--white); color:var(--black)}
+.fine{font-style:italic; font-size:15px; color:#cfe9f8}
+
+/* ===== reduced motion ===== */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none !important; transition:none !important}
+  .piece:hover .frame{transform:none}
+  .btn:hover{transform:none}
+}
