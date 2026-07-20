@@ -2,9 +2,12 @@ SAINT PARK gallery — setup
 
 The site is now multi-page, with a shared nav bar on every page:
 
-  index.html    — homepage: hero, "Now showing" strip (first 3 pieces),
-                  about teaser, commission card
+  index.html    — homepage: poster "gates" hero, "On the marquee" headliner,
+                  "Now showing" strip, commission band
   gallery.html  — the full wall: everything on view
+  kids/         — SPMV Kids, the kids' builder (public, linked in the nav).
+                  A verbatim copy of SaintParkVisualizer/kids.html — to update
+                  it, copy that file over kids/index.html and push.
   about.html    — the story, social links, commission card
   watch.html    — inline video player (cards link here; noindex)
   styles.css    — shared design system (black / white / blue)
