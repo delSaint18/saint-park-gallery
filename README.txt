@@ -6,13 +6,18 @@ The site is now multi-page, with a shared nav bar on every page:
                   "Now showing" strip, commission band
   gallery.html  — the full wall: everything on view
   kids/         — SPMV Kids, the kids' builder (public, linked in the nav).
-                  A verbatim copy of SaintParkVisualizer/kids.html — to update
-                  it, copy that file over kids/index.html and push.
+                  A copy of SaintParkVisualizer/kids.html — to update it, copy
+                  that file over kids/index.html and push. A "Back to the Park"
+                  button block is appended before </body> in BOTH files, so
+                  fresh copies keep it automatically.
   about.html    — the story, social links, commission card
   watch.html    — inline video player (cards link here; noindex)
-  styles.css    — shared design system (black / white / blue)
-  site.js       — shared logic: loads ring.json + manifest.json + videos.txt,
-                  builds cards, fills text from manifest, webring, parallax
+  styles.css    — shared design system (design tokens; DAY + NIGHT themes;
+                  Archivo Black display / Space Grotesk UI / Lora body;
+                  TV-static grain overlay)
+  site.js       — shared logic: theme toggle (persists via localStorage),
+                  loads ring.json + manifest.json + videos.txt, builds cards,
+                  fills text from manifest, webring, parallax
 
 manifest.json is filled in (bio, pitch, email, links). ring.json is empty and
 ready. Text on the pages (tagline, bio, pitch, booking email, social links) is

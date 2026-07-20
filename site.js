@@ -31,6 +31,23 @@ function loadText(path){
     .catch(function(){ return ""; });
 }
 
+/* -------- day / night theme toggle -------- */
+(function(){
+  var btn = byId("theme-toggle");
+  if (!btn) return;
+  function paint(){
+    btn.textContent = (document.documentElement.getAttribute("data-theme") === "night") ? "☀ Day" : "☾ Night";
+  }
+  paint();
+  btn.addEventListener("click", function(e){
+    e.preventDefault();
+    var next = (document.documentElement.getAttribute("data-theme") === "night") ? "day" : "night";
+    document.documentElement.setAttribute("data-theme", next);
+    try{ localStorage.setItem("sp-theme", next); }catch(err){}
+    paint();
+  });
+})();
+
 /* -------- card builders -------- */
 function youtubeId(url){
   if (!url) return null;
